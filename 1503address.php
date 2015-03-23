@@ -15,166 +15,124 @@ global $wpdb;
 if($_POST['contact_form'])
 {
 
-  	global $wpdb;
-  	if(isset($_POST['interest'])) 
-    {
+	  global $wpdb;
+	  	if(isset($_POST['interest'])) 
+            {
 
-        $cartype = implode(",", $_POST['interest']); 
-        //$productid_arr = explode(',' , $cartype); 
-        //$cartype = $_POST['cartype'];
-    }
-    else 
-    {
-        $cartype = "";
-        //$productid_arr = explode(',' , $cartype); 
-    }  
- 	if($_POST['id'])
- 	{
+                $cartype = implode(",", $_POST['interest']); 
+                //$productid_arr = explode(',' , $cartype); 
+                //$cartype = $_POST['cartype'];
+            }
+            else 
+            {
+                $cartype = "";
+                //$productid_arr = explode(',' , $cartype); 
+            }  
+	 if($_POST['id'])
+	 {
 
 	 	if ($_FILES["file"]["error"] > 0)
-        {
-        	echo "Error: " . $_FILES["file"]["error"] . "<br>";
-        }
-        else
-        {
-                                                                              
-	        $path_array  = wp_upload_dir();
-          	$path = str_replace('\\', '/', $path_array['path']);
-	            
-          	$old_name = $_FILES["file"]["name"];
-          	$split_name = explode('.',$old_name);
-          	$time = time();
-          	$file_name = $time.".".$split_name[1];
-	           
-          	$tmp_name = $_FILES["file"]["tmp_name"];
-      
+                                      {
+                                      echo "Error: " . $_FILES["file"]["error"] . "<br>";
+                                      }
+                                    else
+                                      {
+                                                                                                      
+                                  $path_array  = wp_upload_dir();
+                                  $path = str_replace('\\', '/', $path_array['path']);
+                                    
+                                  $old_name = $_FILES["file"]["name"];
+                                  $split_name = explode('.',$old_name);
+                                  $time = time();
+                                  $file_name = $time.".".$split_name[1];
+                                   
+                                  $tmp_name = $_FILES["file"]["tmp_name"];
+                              
 
 
 
-          	move_uploaded_file($_FILES["file"]["tmp_name"],$path. "/" . $old_name);
-           
-          	$path2 = $path. "/" . $old_name;
-           	// echo"$path2";
-          	//this code for insert into carimage working but not moving files 
-           	//$wpdb->insert( 'carimage', array('image' => $path2,'carid' => 37,'description' => $_POST['make'],'created' => $created,'updated' => $updated) );
-          	//  mysql_query("INSERT INTO" . $wpdb->prefix."addressbook (image,carid,description,created,updated) VALUES ('$path2','$x','$makeid','$created','$updated') ON DUPLICATE KEY UPDATE image='$path2',description='$makeid',updated='$updated'");
-      	}
+                                      move_uploaded_file($_FILES["file"]["tmp_name"],$path. "/" . $old_name);
+                                   
+                                      $path2 = $path. "/" . $old_name;
+                                   // echo"$path2";
+                                      //this code for insert into carimage working but not moving files 
+                                   //$wpdb->insert( 'carimage', array('image' => $path2,'carid' => 37,'description' => $_POST['make'],'created' => $created,'updated' => $updated) );
+                                  //  mysql_query("INSERT INTO" . $wpdb->prefix."addressbook (image,carid,description,created,updated) VALUES ('$path2','$x','$makeid','$created','$updated') ON DUPLICATE KEY UPDATE image='$path2',description='$makeid',updated='$updated'");
+                                  }
 		$id = $_POST['id'];
-
-		if(!empty($path2)) 
-		{
-			$sql = "UPDATE " . $wpdb->prefix."addressbook SET
-					f_name = '" . $_POST['f_name'] ."',
-					m_name = '" . $_POST['m_name'] ."',
-					l_name = '" . $_POST['l_name'] ."',
-					email = '" . $_POST['email'] ."',
-					address = '" . $_POST['address'] ."',
-					phone = '" . $_POST['phone'] ."',
-					gender = '" . $_POST['gender'] ."',
-					p_url = '" . $path2 ."',
-					interest = '" . $cartype ."',
-					birthdate = '" . $_POST['MyDate'] ."'
-					WHERE id = " . $_POST['id'];	
-		}
+		if(!empty($path2)) {
+		$sql = "UPDATE " . $wpdb->prefix."addressbook SET
+				f_name = '" . $_POST['f_name'] ."',
+				m_name = '" . $_POST['m_name'] ."',
+				l_name = '" . $_POST['l_name'] ."',
+				email = '" . $_POST['email'] ."',
+				address = '" . $_POST['address'] ."',
+				phone = '" . $_POST['phone'] ."',
+				gender = '" . $_POST['gender'] ."',
+				p_url = '" . $path2 ."',
+				interest = '" . $cartype ."',
+				birthdate = '" . $_POST['MyDate'] ."'
+				WHERE id = " . $_POST['id'];	
+			}
 		else {
-			$sql = "UPDATE " . $wpdb->prefix."addressbook SET
-					f_name = '" . $_POST['f_name'] ."',
-					m_name = '" . $_POST['m_name'] ."',
-					l_name = '" . $_POST['l_name'] ."',
-					email = '" . $_POST['email'] ."',
-					address = '" . $_POST['address'] ."',
-					phone = '" . $_POST['phone'] ."',
-					gender = '" . $_POST['gender'] ."',
-					interest = '" . $cartype ."',
-					birthdate = '" . $_POST['MyDate'] ."'
-					WHERE id = " . $_POST['id'];	
-		}
+		$sql = "UPDATE " . $wpdb->prefix."addressbook SET
+				f_name = '" . $_POST['f_name'] ."',
+				m_name = '" . $_POST['m_name'] ."',
+				l_name = '" . $_POST['l_name'] ."',
+				email = '" . $_POST['email'] ."',
+				address = '" . $_POST['address'] ."',
+				phone = '" . $_POST['phone'] ."',
+				gender = '" . $_POST['gender'] ."',
+				interest = '" . $cartype ."',
+				birthdate = '" . $_POST['MyDate'] ."'
+				WHERE id = " . $_POST['id'];	
+			}
 	
-	 	mysql_query($sql); 		
+		 mysql_query($sql); 		
 		$msg = 'Data has been updated successfully';
 		
- 	} 
- 	else
- 	{
-	 	//$date = $_POST['year_start'] . '-' . $_POST['month_start'] . '-' . $_POST['day_start'];
-	 	$date = $_POST['MyDate'];
+	 } 
+	 else
+	 {
 	 	if ($_FILES["file"]["error"] > 0)
-      	{
-          	echo "Error: " . $_FILES["file"]["error"] . "<br>";
-      	}
-        else
-      	{
-                                                                          
-	      	$path_array  = wp_upload_dir();
-	      	$path = str_replace('\\', '/', $path_array['path']);
-		        
-	      	$old_name = $_FILES["file"]["name"];
-	      	$split_name = explode('.',$old_name);
-	      	$time = time();
-	      	$file_name = $time.".".$split_name[1];
-		       
-	      	$tmp_name = $_FILES["file"]["tmp_name"];
-  
+                                      {
+                                      echo "Error: " . $_FILES["file"]["error"] . "<br>";
+                                      }
+                                    else
+                                      {
+                                                                                                      
+                                  $path_array  = wp_upload_dir();
+                                  $path = str_replace('\\', '/', $path_array['path']);
+                                    
+                                  $old_name = $_FILES["file"]["name"];
+                                  $split_name = explode('.',$old_name);
+                                  $time = time();
+                                  $file_name = $time.".".$split_name[1];
+                                   
+                                  $tmp_name = $_FILES["file"]["tmp_name"];
+                              
 
 
 
-      		move_uploaded_file($_FILES["file"]["tmp_name"],$path. "/" . $old_name);
-       
-          	$path2 = $path. "/" . $old_name;
-       		// echo"$path2";
-          	//this code for insert into carimage working but not moving files 
-       		//$wpdb->insert( 'carimage', array('image' => $path2,'carid' => 37,'description' => $_POST['make'],'created' => $created,'updated' => $updated) );
-      		//  mysql_query("INSERT INTO" . $wpdb->prefix."addressbook (image,carid,description,created,updated) VALUES ('$path2','$x','$makeid','$created','$updated') ON DUPLICATE KEY UPDATE image='$path2',description='$makeid',updated='$updated'");
-      	}
-
-      	if(trim($_POST['f_name']) === '' && trim($_POST['m_name']) === '' && trim($_POST['l_name']) === '') {
-			$Error = 'Please enter your name.';
-			$hasError = true;
-		} else {
-			$f_name = trim($_POST['f_name']);
-			$m_name = trim($_POST['m_name']);
-			$l_name = trim($_POST['l_name']);
-		}
-		if(trim($_POST['email']) === '')  {
-			$Error = 'Please enter your email address.';
-			$hasError = true;
-		} else if (!preg_match("/^[[:alnum:]][a-z0-9_.-]*@[a-z0-9.-]+\.[a-z]{2,4}$/i", trim($_POST['email']))) {
-			$Error = 'You entered an invalid email address.';
-			$hasError = true;
-		} else {
-			$usermail = trim($_POST['email']);
-		}
-		if(trim($_POST['phone']) === '')  {
-			$Error = 'Please enter your Phone number.';
-			$hasError = true;
-		}
-		// else if(!preg_match("/^[0-9\/. \-]*$/", trim($_POST['phone']))) {
-		// 	//$pattern = '/^[0-9\/. \-]*$/';
-		//   	// $phone is valid
-		//   	$Error = 'You entered an invalid Phone Number.';
-		// 	$hasError = true;
-		// }
-		else {
-			$userphone = trim($_POST['phone']);
-		}
-		if(!isset($hasError)) {
-			$sql = "INSERT INTO " . $wpdb->prefix."addressbook (f_name,m_name,l_name,email,address,phone,gender,birthdate,p_url,interest) VALUES ('" . $f_name ."', '" . $m_name ."', '" . $l_name ."', '" . $usermail ."', '" . $_POST['address'] ."', '" . $userphone ."', '" . $_POST['gender'] ."', '" . $date."', '" . $path2 ."', '" . $cartype ."')"; 
+                                      move_uploaded_file($_FILES["file"]["tmp_name"],$path. "/" . $old_name);
+                                   
+                                      $path2 = $path. "/" . $old_name;
+                                   // echo"$path2";
+                                      //this code for insert into carimage working but not moving files 
+                                   //$wpdb->insert( 'carimage', array('image' => $path2,'carid' => 37,'description' => $_POST['make'],'created' => $created,'updated' => $updated) );
+                                  //  mysql_query("INSERT INTO" . $wpdb->prefix."addressbook (image,carid,description,created,updated) VALUES ('$path2','$x','$makeid','$created','$updated') ON DUPLICATE KEY UPDATE image='$path2',description='$makeid',updated='$updated'");
+                                  }
+		$sql = "INSERT INTO " . $wpdb->prefix."addressbook (f_name,m_name,l_name,email,address,phone,gender,birthdate,p_url,interest) VALUES ('" . $_POST['f_name'] ."', '" . $_POST['m_name'] ."', '" . $_POST['l_name'] ."', '" . $_POST['email'] ."', '" . $_POST['address'] ."', '" . $_POST['phone'] ."', '" . $_POST['gender'] ."', '" . $_POST['MyDate'] ."', '" . $path2 ."', '" . $cartype ."')"; 
+	
+		mysql_query($sql); 
+		$id = mysql_insert_id();
+		$msg = 'Data has been added successfully';
 		
-			mysql_query($sql); 
-			$id = mysql_insert_id();
-			$msg = 'Data has been added successfully';
-		}
-		else 
-		{
-			//echo $Error;
-			$msg = $Error;
-		}
-		
- 	}
+	 }
 	 
 	
 	
-}
+ }
  
  
  if($id)
@@ -208,7 +166,7 @@ $ami=$info->interest;
 			<h1>Add Contacts Page</h1> 
 			<?php echo isset($msg) ? $msg : ''; ?> 
 		</div>
-		<div class="add_newup"> 
+		<div class="add_new"> 
 			<?php 
 			$pages = get_pages(array(
 			'meta_key' => '_wp_page_template',
@@ -218,9 +176,7 @@ $ami=$info->interest;
 				//echo $page->ID.'<br />';
 			
 			}
-		 	//echo '<a href="'. get_permalink( $page->ID).'"> View All</a>';
-		 	echo '<div class="add_new11"><div class="add_new1"> <a href="' . get_permalink( $page->ID) . '"> View All</a>
-	  	</div></div>';
+		 	echo '<a href="'. get_permalink( $page->ID).'"> View All</a>';
 			?>
 			<!-- <a href="<?php echo get_site_url();?>/wp-admin/admin.php?page=my_list_test"> View All</a> -->
 		</div>
@@ -315,75 +271,6 @@ $ami=$info->interest;
 						    })
 
 						</script>
-
-						<!-- <fieldset class="date"> 
-						  	<legend>Start Date </legend> 
-								  <label for="month_start">Month</label> 
-								  <select id="month_start" 
-								          name="month_start" /> 
-								    <option value="01">January</option>       
-								    <option value="02">February</option>       
-								    <option value="03">March</option>       
-								    <option value="04">April</option>       
-								    <option value="05">May</option>       
-								    <option value="06">June</option>       
-								    <option value="07">July</option>       
-								    <option value="08" >August</option>       
-								    <option value="09">September</option>       
-								    <option value="10" >October</option>       
-								    <option value="11">November</option>       
-								    <option value="12">December</option>       
-								  </select> - 
-								  <label for="day_start">Day</label> 
-								  <select id="day_start" 
-								          name="day_start" />
-								                     <?php
-								
-
-
-								if($date1 == '00') {
-								    echo '<option value="00" selected="selected">00</option>';
-								} else {
-								    echo '<option value="00">00</option>';
-								}
-								for($date1 = 00; $date1 < 31; $date1 ++) {
-								    if($date1 == $birthdayYear) {
-								        echo '<option value="'.$date1.'" selected="selected">'.$date1.'</option>';
-								    } else {
-								        echo '<option value="'.$date1.'">'.$date1.'</option>';
-								    }
-								}
-								?>
-								  
-								  </select> - 
-								  <label for="year_start">Year</label> 
-								  <select id="year_start" 
-								         name="year_start" /> 
-								           <option value="0000">Year:</option>
-								           <?php
-								
-
-
-								if($year == '0000') {
-								    echo '<option value="0000" selected="selected">0000</option>';
-								} else {
-								    echo '<option value="0000">0000</option>';
-								}
-								for($year = intval(date('Y')); $year > 1900; $year --) {
-								    if($year == $birthdayYear) {
-								        echo '<option value="'.$year.'" selected="selected">'.$year.'</option>';
-								    } else {
-								        echo '<option value="'.$year.'">'.$year.'</option>';
-								    }
-								}
-								?>
-
-								        
-								  </select> 
-								  <span class="inst">(Month-Day-Year)</span> 
-						</fieldset>  -->
-
-
 
 				 	</td>
 				</tr>
